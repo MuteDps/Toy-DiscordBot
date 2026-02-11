@@ -1,0 +1,143 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\discordbot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\vlccommandexecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\ytdlphelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\logger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\jobtracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\iplaybackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB8FBBB1-F120-0635-43F6-368B1C153FCA}|YoutubeTogether.csproj|\\\\192.168.0.65\\e\\youtubebot\\toy-discordbot-main\\src\\icommandexecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "YtDlpHelper.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\YtDlpHelper.cs",
+              "RelativeDocumentMoniker": "YtDlpHelper.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\YtDlpHelper.cs",
+              "RelativeToolTip": "YtDlpHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:35.714Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "VLCCommandExecutor.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\VLCCommandExecutor.cs",
+              "RelativeDocumentMoniker": "VLCCommandExecutor.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\VLCCommandExecutor.cs",
+              "RelativeToolTip": "VLCCommandExecutor.cs",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAIwOcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:32.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "JobTracker.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\JobTracker.cs",
+              "RelativeDocumentMoniker": "JobTracker.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\JobTracker.cs",
+              "RelativeToolTip": "JobTracker.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:26.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DiscordBot.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\DiscordBot.cs",
+              "RelativeDocumentMoniker": "DiscordBot.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\DiscordBot.cs",
+              "RelativeToolTip": "DiscordBot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:19.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Logger.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\Logger.cs",
+              "RelativeDocumentMoniker": "Logger.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\Logger.cs",
+              "RelativeToolTip": "Logger.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:27.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IPlaybackController.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\IPlaybackController.cs",
+              "RelativeDocumentMoniker": "IPlaybackController.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\IPlaybackController.cs",
+              "RelativeToolTip": "IPlaybackController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:25.832Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:28.741Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ICommandExecutor.cs",
+              "DocumentMoniker": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\ICommandExecutor.cs",
+              "RelativeDocumentMoniker": "ICommandExecutor.cs",
+              "ToolTip": "\\\\192.168.0.65\\e\\YoutubeBot\\Toy-DiscordBot-main\\src\\ICommandExecutor.cs",
+              "RelativeToolTip": "ICommandExecutor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T08:41:24.89Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -116,12 +116,18 @@ namespace YoutubeTogether
             return false;
         }
 
-        public async Task<string> EnqueueAsync(string url)
+        public async Task<string> EnqueueAsync(string url, string inputSlave = null)
         {
             try
             {
                 var encoded = Uri.EscapeDataString(url);
-                await SendRequestAsync($"/requests/status.xml?command=in_enqueue&input={encoded}");
+                string commandUrl = $"/requests/status.xml?command=in_enqueue&input={encoded}";
+                if (!string.IsNullOrWhiteSpace(inputSlave))
+                {
+                    var encodedSlave = Uri.EscapeDataString(inputSlave);
+                    commandUrl += $"&option={Uri.EscapeDataString("input-slave=" + inputSlave)}";
+                }
+                await SendRequestAsync(commandUrl);
                 // return last id
                 var ids = await GetPlaylistIdsAsync();
                 if (ids.Count > 0) return ids[ids.Count - 1];

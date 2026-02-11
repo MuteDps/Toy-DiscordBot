@@ -16,7 +16,11 @@ namespace YoutubeTogether
 
         public DiscordBot()
         {
-            _client = new DiscordSocketClient();
+            var config = new DiscordSocketConfig
+            {
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+            };
+            _client = new DiscordSocketClient(config);
             _executor = new VLCCommandExecutor();
             _playback = _executor as IPlaybackController ?? new VLCCommandExecutor();
             _client.MessageReceived += OnMessageReceivedAsync;
@@ -24,7 +28,11 @@ namespace YoutubeTogether
 
         public DiscordBot(ICommandExecutor executor, IPlaybackController playback = null)
         {
-            _client = new DiscordSocketClient();
+            var config = new DiscordSocketConfig
+            {
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+            };
+            _client = new DiscordSocketClient(config);
             _executor = executor ?? new VLCCommandExecutor();
             _playback = playback ?? (_executor as IPlaybackController) ?? new VLCCommandExecutor();
             _client.MessageReceived += OnMessageReceivedAsync;
@@ -49,11 +57,11 @@ namespace YoutubeTogether
                 {
                     var requester = message.Author?.Username ?? "DiscordUser";
                     await _playback.EnqueueAsync(url, requester);
-                    await message.Channel.SendMessageAsync($"대기열에 추가됨: {url} (요청자: {requester})");
+                    await SendAndDeleteAsync(message, $"대기열에 추가됨: {url} (요청자: {requester})");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"대기열 추가 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"대기열 추가 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!skip"))
@@ -62,11 +70,11 @@ namespace YoutubeTogether
                 try
                 {
                     await _playback.SkipAsync();
-                    await message.Channel.SendMessageAsync("현재 영상 건너뛰기 요청됨");
+                    await SendAndDeleteAsync(message, "현재 영상 건너뛰기 요청됨");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"스킵 요청 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"스킵 요청 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!queue"))
@@ -76,13 +84,21 @@ namespace YoutubeTogether
                 {
                     var list = await _playback.GetQueueAsync();
                     if (list != null && list.Count > 0)
-                        await message.Channel.SendMessageAsync("대기열:\n" + string.Join("\n", list));
+                    {
+                        // If queue is too long, Discord might reject it (2000 chars limit). 
+                        // We will truncate it and show the count.
+                        var fullText = "대기열:\n" + string.Join("\n", list);
+                        if (fullText.Length > 1900) fullText = fullText.Substring(0, 1890) + "\n... (대기열이 너무 길어 생략됨)";
+                        await SendAndDeleteAsync(message, fullText);
+                    }
                     else
-                        await message.Channel.SendMessageAsync("대기열이 비어 있습니다.");
+                    {
+                        await SendAndDeleteAsync(message, "대기열이 비어 있습니다.");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"대기열 조회 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"대기열 조회 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!jobs"))
@@ -92,13 +108,13 @@ namespace YoutubeTogether
                 {
                     var jobs = await _playback.GetJobsAsync();
                     if (jobs != null && jobs.Count > 0)
-                        await message.Channel.SendMessageAsync("작업 목록:\n" + string.Join("\n", jobs));
+                        await SendAndDeleteAsync(message, "작업 목록:\n" + string.Join("\n", jobs));
                     else
-                        await message.Channel.SendMessageAsync("실행 중인 작업이 없습니다.");
+                        await SendAndDeleteAsync(message, "실행 중인 작업이 없습니다.");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"작업 목록 조회 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"작업 목록 조회 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!stats"))
@@ -108,13 +124,13 @@ namespace YoutubeTogether
                 {
                     var stats = await _playback.GetStatsAsync();
                     if (stats != null && stats.Count > 0)
-                        await message.Channel.SendMessageAsync(string.Join("\n", stats));
+                        await SendAndDeleteAsync(message, string.Join("\n", stats));
                     else
-                        await message.Channel.SendMessageAsync("통계 데이터가 없습니다.");
+                        await SendAndDeleteAsync(message, "통계 데이터가 없습니다.");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"통계 조회 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"통계 조회 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!remove "))
@@ -126,17 +142,24 @@ namespace YoutubeTogether
                     try
                     {
                         var success = await _playback.RemoveAtAsync(idx - 1);
-                        await message.Channel.SendMessageAsync(success ? $"{idx}번 항목 삭제됨" : "삭제 실패");
+                        await SendAndDeleteAsync(message, success ? $"{idx}번 항목 삭제됨" : "삭제 실패");
                     }
                     catch (Exception ex)
                     {
-                        await message.Channel.SendMessageAsync($"삭제 실패: {ex.Message}");
+                        await SendAndDeleteAsync(message, $"삭제 실패: {ex.Message}");
                     }
                 }
                 else
                 {
-                    await message.Channel.SendMessageAsync("!remove <번호> 형식으로 입력하세요.");
+                    await SendAndDeleteAsync(message, "!remove <번호> 형식으로 입력하세요.");
                 }
+            }
+            else if (message.Content.StartsWith("!jump "))
+            {
+                var arg = message.Content.Substring(6).Trim();
+                Logger.Log($"점프 요청: {arg}");
+                _executor.Execute("jump", arg);
+                await SendAndDeleteAsync(message, $"{arg}번 항목으로 점프 요청됨");
             }
             else if (message.Content.StartsWith("!clear"))
             {
@@ -144,11 +167,11 @@ namespace YoutubeTogether
                 try
                 {
                     await _playback.ClearQueueAsync();
-                    await message.Channel.SendMessageAsync("대기열 전체 삭제 요청 완료");
+                    await SendAndDeleteAsync(message, "대기열 전체 삭제 요청 완료");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"대기열 전체 삭제 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"대기열 전체 삭제 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!stop"))
@@ -157,17 +180,36 @@ namespace YoutubeTogether
                 try
                 {
                     await _playback.StopAsync();
-                    await message.Channel.SendMessageAsync("VLC 영상 정지됨");
+                    await SendAndDeleteAsync(message, "VLC 영상 정지됨");
                 }
                 catch (Exception ex)
                 {
-                    await message.Channel.SendMessageAsync($"정지 실패: {ex.Message}");
+                    await SendAndDeleteAsync(message, $"정지 실패: {ex.Message}");
                 }
             }
             else if (message.Content.StartsWith("!help"))
             {
-                await message.Channel.SendMessageAsync("사용 가능한 명령어:\n!play <YouTube URL>\n!skip\n!queue\n!remove <번호>\n!clear\n!stop\n!help");
+                await SendAndDeleteAsync(message, "사용 가능한 명령어:\n!play <URL>\n!skip\n!jump <번호>\n!queue\n!remove <번호>\n!clear\n!stop\n!jobs\n!stats\n!help");
             }
+        }
+
+        private async Task SendAndDeleteAsync(SocketMessage original, string responseText, int delayMs = 30000)
+        {
+            try
+            {
+                var response = await original.Channel.SendMessageAsync(responseText);
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await Task.Delay(delayMs);
+                        await response.DeleteAsync();
+                        await original.DeleteAsync();
+                    }
+                    catch { /* Ignore if already deleted */ }
+                });
+            }
+            catch (Exception ex) { Logger.Log($"메세지 전송/삭제 중 오류: {ex.Message}"); }
         }
         // DiscordBot no longer directly calls VLC HTTP — uses IPlaybackController
 

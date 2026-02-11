@@ -17,7 +17,7 @@ namespace YoutubeTogether
             var cli = new CLICommandExecutor(vlcExecutor);
             var bot = new DiscordBot(vlcExecutor);
 
-            string token = "YOUR_DISCORD_BOT_TOKEN"; // 실제 토큰으로 교체
+            string token = "디스코드 토큰 봇"; // 실제 토큰으로 교체
 
             // Discord 봇을 백그라운드로 시작
             var botTask = Task.Run(async () =>

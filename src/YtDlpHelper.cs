@@ -16,7 +16,7 @@ namespace YoutubeTogether
             var psi = new ProcessStartInfo
             {
                 FileName = file,
-                Arguments = $"-g \"{youtubeUrl}\"",
+                Arguments = $"-f \"bestvideo[height>=720]+bestaudio/best[height>=720]/best\" -g \"{youtubeUrl}\"",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
@@ -104,30 +104,87 @@ namespace YoutubeTogether
                     var output = await process.StandardOutput.ReadToEndAsync();
                     await process.WaitForExitAsync();
                     if (string.IsNullOrWhiteSpace(output)) return (null, null);
-                    try
-                    {
-                        using (var doc = System.Text.Json.JsonDocument.Parse(output))
-                        {
-                            var root = doc.RootElement;
-                            string title = null;
-                            double? duration = null;
-                            if (root.TryGetProperty("title", out var t))
-                                title = t.GetString();
-                            if (root.TryGetProperty("duration", out var d) && d.ValueKind == System.Text.Json.JsonValueKind.Number)
-                                duration = d.GetDouble();
-                            return (title, duration);
-                        }
-                    }
-                    catch
-                    {
-                        return (null, null);
-                    }
+                    return ParseJsonMetadata(output);
                 }
             }
-            catch
+            catch { return (null, null); }
+        }
+
+        private static (string title, double? duration) ParseJsonMetadata(string json)
+        {
+            try
             {
-                return (null, null);
+                using (var doc = System.Text.Json.JsonDocument.Parse(json))
+                {
+                    var root = doc.RootElement;
+                    string title = null;
+                    double? duration = null;
+                    if (root.TryGetProperty("title", out var t)) title = t.GetString();
+                    if (root.TryGetProperty("duration", out var d) && d.ValueKind == System.Text.Json.JsonValueKind.Number)
+                        duration = d.GetDouble();
+                    return (title, duration);
+                }
             }
+            catch { return (null, null); }
+        }
+
+        public static async System.Threading.Tasks.Task GetYoutubePlaylistDetailsAsync(string playlistUrl, System.Action<string, string, string, double?> onEntryFound)
+        {
+            try
+            {
+                var exe = System.IO.Path.Combine(AppContext.BaseDirectory, "yt-dlp.exe");
+                var file = System.IO.File.Exists(exe) ? exe : "yt-dlp";
+                var psi = new ProcessStartInfo
+                {
+                    FileName = file,
+                    // Use -j for JSON output, -f for format selection. 
+                    // This outputs one JSON object per playlist item as it is processed.
+                    Arguments = $"-j -f \"bestvideo[height>=720]+bestaudio/best[height>=720]/best\" \"{playlistUrl}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+                using (var process = Process.Start(psi))
+                {
+                    while (!process.StandardOutput.EndOfStream)
+                    {
+                        var line = await process.StandardOutput.ReadLineAsync();
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        try
+                        {
+                            using (var doc = System.Text.Json.JsonDocument.Parse(line))
+                            {
+                                var root = doc.RootElement;
+                                string title = null;
+                                double? duration = null;
+                                string videoUrl = null;
+                                string audioUrl = null;
+
+                                if (root.TryGetProperty("title", out var t)) title = t.GetString();
+                                if (root.TryGetProperty("duration", out var d) && d.ValueKind == System.Text.Json.JsonValueKind.Number)
+                                    duration = d.GetDouble();
+
+                                // For non-flat extraction, formats or direct url is available
+                                if (root.TryGetProperty("url", out var u)) videoUrl = u.GetString();
+                                
+                                // Handling cases where requested format might result in multiple streams (video+audio)
+                                // If the root 'url' is not the final direct stream, yt-dlp sometimes puts them in 'requested_formats'
+                                if (root.TryGetProperty("requested_formats", out var rf) && rf.ValueKind == System.Text.Json.JsonValueKind.Array && rf.GetArrayLength() >= 2)
+                                {
+                                    videoUrl = rf[0].GetProperty("url").GetString();
+                                    audioUrl = rf[1].GetProperty("url").GetString();
+                                }
+
+                                if (!string.IsNullOrEmpty(videoUrl))
+                                    onEntryFound?.Invoke(videoUrl, audioUrl, title, duration);
+                            }
+                        }
+                        catch { }
+                    }
+                    await process.WaitForExitAsync();
+                }
+            }
+            catch { }
         }
     }
 }

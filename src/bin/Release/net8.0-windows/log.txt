@@ -1,0 +1,215 @@
+[2026-02-11 18:49:21] 명령 수신: !play https://www.youtube.com/watch?v=JkefloYdy3c (from muteskmyuteu)
+[2026-02-11 18:49:21] 영상 재생 요청: https://www.youtube.com/watch?v=JkefloYdy3c
+[2026-02-11 18:49:22] 명령 수신: 대기열에 추가됨: https://www.youtube.com/watch?v=JkefloYdy3c (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 18:53:04] 명령 수신:  (from MuteBot)
+[2026-02-11 18:56:05] 명령 수신: !help (from muteskmyuteu)
+[2026-02-11 18:56:05] 명령 수신: 사용 가능한 명령어:
+!play <YouTube URL>
+!skip
+!queue
+!remove <번호>
+!clear
+!stop
+!help (from MuteBot)
+[2026-02-11 18:56:41] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=XCRvnN51xAKpQo_1 (from muteskmyuteu)
+[2026-02-11 18:56:41] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=XCRvnN51xAKpQo_1
+[2026-02-11 18:56:42] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=XCRvnN51xAKpQo_1 (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 18:56:59] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 18:56:59] 대기열 보기 요청
+[2026-02-11 18:57:00] 명령 수신: 대기열:
+무슨 생각을해야 종이 한장으로 가리는 디자인을 낼 수 있는거냐 [트릭컬] (06:59) (from MuteBot)
+[2026-02-11 18:58:23] 명령 수신: !clear (from muteskmyuteu)
+[2026-02-11 18:58:23] 대기열 전체 삭제 요청
+[2026-02-11 18:58:24] 명령 수신: 대기열 전체 삭제 요청 완료 (from MuteBot)
+[2026-02-11 18:58:38] 명령 수신: !play https://www.youtube.com/watch?v=QhqSq03Onng (from muteskmyuteu)
+[2026-02-11 18:58:38] 영상 재생 요청: https://www.youtube.com/watch?v=QhqSq03Onng
+[2026-02-11 18:58:38] 명령 수신: 대기열에 추가됨: https://www.youtube.com/watch?v=QhqSq03Onng (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:00:56] 명령 수신: !play https://www.youtube.com/watch?v=HF_TD6pyhHQ (from muteskmyuteu)
+[2026-02-11 19:00:56] 영상 재생 요청: https://www.youtube.com/watch?v=HF_TD6pyhHQ
+[2026-02-11 19:00:57] 명령 수신: 대기열에 추가됨: https://www.youtube.com/watch?v=HF_TD6pyhHQ (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:03:43] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (from muteskmyuteu)
+[2026-02-11 19:03:43] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6
+[2026-02-11 19:03:43] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:05:46] 명령 수신: !jobs (from muteskmyuteu)
+[2026-02-11 19:05:50] 백그라운드 작업 목록 요청
+[2026-02-11 19:05:51] 명령 수신: 작업 목록:
+e505cd15-e29a-49e2-a467-dd97660441f3: Fetching metadata: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwo... (by: Admin(CLI), started: 2026-02-11 10:03:43Z, status: WaitingForActivation) (from MuteBot)
+[2026-02-11 19:06:22] 명령 수신: !play https://www.youtube.com/watch?v=F7A6UsXqJqk (from muteskmyuteu)
+[2026-02-11 19:06:22] 영상 재생 요청: https://www.youtube.com/watch?v=F7A6UsXqJqk
+[2026-02-11 19:06:22] 명령 수신: 대기열에 추가됨: https://www.youtube.com/watch?v=F7A6UsXqJqk (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:07:10] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:07:14] 대기열 보기 요청
+[2026-02-11 19:07:15] 명령 수신: 대기열:
+역대급 여행 호황에도 저가 항공사는 우는 이유｜크랩 (05:13) (from MuteBot)
+[2026-02-11 19:07:59] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (from muteskmyuteu)
+[2026-02-11 19:07:59] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6
+[2026-02-11 19:08:00] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:08:38] 명령 수신: !jobs (from muteskmyuteu)
+[2026-02-11 19:08:38] 백그라운드 작업 목록 요청
+[2026-02-11 19:08:38] 명령 수신: 작업 목록:
+- [10:07:59] Fetching metadata: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwo... (by muteskmyuteu) [Running] (from MuteBot)
+[2026-02-11 19:11:24] 명령 수신: !jobs (from muteskmyuteu)
+[2026-02-11 19:11:24] 백그라운드 작업 목록 요청
+[2026-02-11 19:11:25] 명령 수신: 작업 목록:
+- [10:07:59] Resolving stream: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwo... (by muteskmyuteu) [Running] (from MuteBot)
+[2026-02-11 19:11:30] 명령 수신: !play https://www.youtube.com/watch?v=aAPGUWUqti0 (from muteskmyuteu)
+[2026-02-11 19:11:30] 영상 재생 요청: https://www.youtube.com/watch?v=aAPGUWUqti0
+[2026-02-11 19:11:30] 명령 수신: 대기열에 추가됨: https://www.youtube.com/watch?v=aAPGUWUqti0 (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:12:33] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (from muteskmyuteu)
+[2026-02-11 19:12:33] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6
+[2026-02-11 19:12:33] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=O_7X-3AR1LD5wtQ6 (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:12:43] 명령 수신: !jobs (from muteskmyuteu)
+[2026-02-11 19:12:43] 백그라운드 작업 목록 요청
+[2026-02-11 19:12:43] 명령 수신: 작업 목록:
+- [10:12:33] Fetching metadata: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwo... (by muteskmyuteu) [Running] (from MuteBot)
+[2026-02-11 19:13:58] 명령 수신: !play https://youtu.be/-H2IIjdiPwI (from muteskmyuteu)
+[2026-02-11 19:13:58] 영상 재생 요청: https://youtu.be/-H2IIjdiPwI
+[2026-02-11 19:13:58] 명령 수신: 대기열에 추가됨: https://youtu.be/-H2IIjdiPwI (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:19:01] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH (from muteskmyuteu)
+[2026-02-11 19:19:01] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH
+[2026-02-11 19:19:01] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:19:26] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:19:26] 대기열 보기 요청
+[2026-02-11 19:19:27] 명령 수신: 대기열:
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 00 : Tutorial: Prologue』[Korean] (05:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 01 : At least spread some jam』[Korean] (01:05:02)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 02 : Great Association for Feed』[Korean] (53:51)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 03 : True Education of Tragedy』[Korean] (01:18:01)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 04 : 5 minutes before kingdom explosion』[Korean] (57:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 05 : a view of the fire next door』[Korean] (01:05:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 06 : Bow four times and hit four times』[Korean] (01:29:29)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 07 : Bat is the medicine』[Korean] (01:40:45)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 08 : P.o.w.e.r. House』[Korean] (01:35:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 09 : Turn it over at the last minute』[Korean] (01:43:18)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Melted Butter』[Korean] (49:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『The Odyssey of Elias』[Korean] (57:16)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Lady of the Lake!』[Korean] (51:20)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Toxic Silver Town』[Korean] (57:39)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Daring Avant-Garde Xmas』[Korean] (56:09)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『A Tribute For You』[Korean] (54:16)
+【 Trickcal RE:VIVE 】 Mini Story 『The Jade shines on the Queen』 [Korean] (12:59) (from MuteBot)
+[2026-02-11 19:21:28] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:21:28] 대기열 보기 요청
+[2026-02-11 19:21:29] 명령 수신: 대기열 조회 실패: Message content is too long, length must be less or equal to 2000. (Parameter 'Content') (from MuteBot)
+[2026-02-11 19:26:33] 명령 수신: !play https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH (from muteskmyuteu)
+[2026-02-11 19:26:33] 영상 재생 요청: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH
+[2026-02-11 19:26:33] 명령 수신: 대기열에 추가됨: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwoQcTgBuQLFew&si=5LNQZR40kqiXH8zH (요청자: muteskmyuteu) (from MuteBot)
+[2026-02-11 19:27:11] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:27:11] 대기열 보기 요청
+[2026-02-11 19:27:12] 명령 수신: 대기열:
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 00 : Tutorial: Prologue』[Korean] (05:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 01 : At least spread some jam』[Korean] (01:05:02)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 02 : Great Association for Feed』[Korean] (53:51)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 03 : True Education of Tragedy』[Korean] (01:18:01)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 04 : 5 minutes before kingdom explosion』[Korean] (57:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 05 : a view of the fire next door』[Korean] (01:05:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 06 : Bow four times and hit four times』[Korean] (01:29:29)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 07 : Bat is the medicine』[Korean] (01:40:45)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 08 : P.o.w.e.r. House』[Korean] (01:35:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 09 : Turn it over at the last minute』[Korean] (01:43:18)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Melted Butter』[Korean] (49:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『The Odyssey of Elias』[Korean] (57:16)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Lady of the Lake!』[Korean] (51:20)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Toxic Silver Town』[Korean] (57:39)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Daring Avant-Garde Xmas』[Korean] (56:09)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『A Tribute For You』[Korean] (54:16)
+【 Trickcal RE:VIVE 】 Mini Story 『The Jade shines on the Queen』 [Korean] (12:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Dancing Fate In the Card Deck』[Korean] (51:40)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Hellish Training of the Steel』[Korean] (53:58)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Picora's Mentor Complex』[Korean] (51:54)
+【 Trickcal RE:VIVE 】 Dimensional Story 『Chapter 01: Now is the time to step forward』[Kore
+... (대기열이 너무 길어 생략됨) (from MuteBot)
+[2026-02-11 19:27:25] 명령 수신: !help (from muteskmyuteu)
+[2026-02-11 19:27:26] 명령 수신: 사용 가능한 명령어:
+!play <URL>
+!skip
+!jump <번호>
+!queue
+!remove <번호>
+!clear
+!stop
+!jobs
+!stats
+!help (from MuteBot)
+[2026-02-11 19:27:30] 명령 수신: !jump 2 (from muteskmyuteu)
+[2026-02-11 19:27:30] 점프 요청: 2
+[2026-02-11 19:27:31] 명령 수신: 2번 항목으로 점프 요청됨 (from MuteBot)
+[2026-02-11 19:28:04] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:28:04] 대기열 보기 요청
+[2026-02-11 19:28:05] 명령 수신: 대기열:
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 01 : At least spread some jam』[Korean] (01:05:02)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 02 : Great Association for Feed』[Korean] (53:51)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 03 : True Education of Tragedy』[Korean] (01:18:01)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 04 : 5 minutes before kingdom explosion』[Korean] (57:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 05 : a view of the fire next door』[Korean] (01:05:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 06 : Bow four times and hit four times』[Korean] (01:29:29)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 07 : Bat is the medicine』[Korean] (01:40:45)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 08 : P.o.w.e.r. House』[Korean] (01:35:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 09 : Turn it over at the last minute』[Korean] (01:43:18)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Melted Butter』[Korean] (49:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『The Odyssey of Elias』[Korean] (57:16)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Lady of the Lake!』[Korean] (51:20)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Toxic Silver Town』[Korean] (57:39)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Daring Avant-Garde Xmas』[Korean] (56:09)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『A Tribute For You』[Korean] (54:16)
+【 Trickcal RE:VIVE 】 Mini Story 『The Jade shines on the Queen』 [Korean] (12:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Dancing Fate In the Card Deck』[Korean] (51:40)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Hellish Training of the Steel』[Korean] (53:58)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Picora's Mentor Complex』[Korean] (51:54)
+【 Trickcal RE:VIVE 】 Dimensional Story 『Chapter 01: Now is the time to step forward』[Korean] (26:14)
+【 Trickcal RE:VIVE 】  Dimensional Story 『Chapter 02: A cat that is kneading the 
+... (대기열이 너무 길어 생략됨) (from MuteBot)
+[2026-02-11 19:33:25] 명령 수신: https://www.youtube.com/watch?v=WAsDtaBaQQE (from time20)
+[2026-02-11 19:34:29] 명령 수신: !queue (from muteskmyuteu)
+[2026-02-11 19:34:29] 대기열 보기 요청
+[2026-02-11 19:34:30] 명령 수신: 대기열:
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 01 : At least spread some jam』[Korean] (01:05:02)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 02 : Great Association for Feed』[Korean] (53:51)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 03 : True Education of Tragedy』[Korean] (01:18:01)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 04 : 5 minutes before kingdom explosion』[Korean] (57:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 05 : a view of the fire next door』[Korean] (01:05:59)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 06 : Bow four times and hit four times』[Korean] (01:29:29)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 07 : Bat is the medicine』[Korean] (01:40:45)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 08 : P.o.w.e.r. House』[Korean] (01:35:20)
+【 Trickcal RE:VIVE 】 Main Story 『Season 1』『Chapter 09 : Turn it over at the last minute』[Korean] (01:43:18)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Melted Butter』[Korean] (49:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『The Odyssey of Elias』[Korean] (57:16)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Lady of the Lake!』[Korean] (51:20)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Toxic Silver Town』[Korean] (57:39)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Daring Avant-Garde Xmas』[Korean] (56:09)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『A Tribute For You』[Korean] (54:16)
+【 Trickcal RE:VIVE 】 Mini Story 『The Jade shines on the Queen』 [Korean] (12:59)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Dancing Fate In the Card Deck』[Korean] (51:40)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Hellish Training of the Steel』[Korean] (53:58)
+【 Trickcal RE:VIVE 】 ThemeEvent Story 『Picora's Mentor Complex』[Korean] (51:54)
+【 Trickcal RE:VIVE 】 Dimensional Story 『Chapter 01: Now is the time to step forward』[Korean] (26:14)
+【 Trickcal RE:VIVE 】  Dimensional Story 『Chapter 02: A cat that is kneading the 
+... (대기열이 너무 길어 생략됨) (from MuteBot)
+[2026-02-11 19:37:04] 명령 수신: !help (from muteskmyuteu)
+[2026-02-11 19:37:04] 명령 수신: 사용 가능한 명령어:
+!play <URL>
+!skip
+!jump <번호>
+!queue
+!remove <번호>
+!clear
+!stop
+!jobs
+!stats
+!help (from MuteBot)
+[2026-02-11 19:37:24] 명령 수신: !stats (from muteskmyuteu)
+[2026-02-11 19:37:24] 작업 통계 요청
+[2026-02-11 19:37:25] 명령 수신: 작업 통계(완료된 최근 작업)
+Resolving: https://youtube.com/playlist?list=PLwUSNK6iPHm-ajkPfJPVwo... (by: muteskmyuteu): count=1, avg=2.8s, max=2.8s
+Playlist [127] - Completed (by: muteskmyuteu): count=1, avg=146.2s, max=146.2s (from MuteBot)
+[2026-02-11 19:53:48] 명령 수신: 사용 가능한 명령어:
+!play <URL>
+!skip
+!jump <번호>
+!queue
+!remove <번호>
+!clear
+!stop
+!jobs
+!stats
+!help (from muteskmyuteu)

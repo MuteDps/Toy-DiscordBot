@@ -53,6 +53,9 @@ namespace YoutubeTogether
                 case "stop":
                     StopVLC();
                     break;
+                case "jump":
+                    JumpToItem(argument);
+                    break;
                 case "help":
                     ShowHelp();
                     break;
@@ -78,9 +81,9 @@ namespace YoutubeTogether
                     var jobs = _jobs.ListJobs();
                     foreach (var j in jobs)
                     {
-                        var status = j.Task == null ? "unknown" : j.Task.Status.ToString();
-                        var requester = string.IsNullOrEmpty(j.Requester) ? "<unknown>" : j.Requester;
-                        outList.Add($"{j.Id}: {j.Description} (by: {requester}, started: {j.StartedAt:u}, status: {status})");
+                        var status = j.CompletedAt.HasValue ? "Done" : "Running";
+                        var requester = string.IsNullOrEmpty(j.Requester) ? "unknown" : j.Requester;
+                        outList.Add($"- [{j.StartedAt:HH:mm:ss}] {j.Description} (by {requester}) [{status}]");
                     }
                 }
                 catch { }
@@ -149,11 +152,13 @@ namespace YoutubeTogether
 
         public async Task EnqueueAsync(string url, string requester = "Admin(CLI)")
         {
-            // track enqueue jobs
+            var shortUrl = url.Length > 60 ? url.Substring(0, 57) + "..." : url;
+            // Run PlayAsync in a background job to avoid blocking the caller (e.g. Discord gateway)
+            // and to ensure the resolution phase is visible in !jobs.
             _jobs.StartJob(async () =>
             {
-                await System.Threading.Tasks.Task.Run(() => EnqueueVlcUrl(url));
-            }, $"Enqueue: {url}", requester);
+                await PlayAsync(url, enqueueIfPlaying: true, enqueueOnly: true, requester: requester);
+            }, $"Resolving: {shortUrl}", requester);
             await Task.CompletedTask;
         }
 
@@ -178,128 +183,73 @@ namespace YoutubeTogether
             try
             {
                 if (string.IsNullOrWhiteSpace(url)) return;
-                string playUrl = url;
-                string audioUrl = null;
-                string metaTitle = null;
-                double? metaDuration = null;
+
+                // Ensure VLC running
+                var startedVlc = await _vlc.EnsureRunningAsync();
+                if (!startedVlc) _vlc.StartProcess();
+
                 if (IsYoutubeUrl(url))
                 {
-                    // First try to detect playlist entries
+                    // FAST check if it's a playlist (flat)
                     var playlistUrls = await YtDlpHelper.GetYoutubePlaylistVideoUrlsAsync(url);
-                    if (playlistUrls != null && playlistUrls.Count > 0)
+                    if (playlistUrls != null && playlistUrls.Count > 1)
                     {
-                            // Only allow playlists with fewer than 100 items
-                            if (playlistUrls.Count >= 100)
+                        // Massive Optimization: Use a single yt-dlp process to resolve everything in the playlist.
+                        string playlistJobId = null;
+                        playlistJobId = _jobs.StartJob(async () =>
+                        {
+                            int processedCount = 0;
+                            await YtDlpHelper.GetYoutubePlaylistDetailsAsync(url, async (vUrl, aUrl, title, duration) =>
                             {
-                                System.Console.WriteLine("플레이리스트는 100개 미만만 지원합니다.");
-                                return;
-                            }
+                                processedCount++;
+                                _jobs.UpdateDescription(playlistJobId, $"Playlist [{processedCount}] - Enqueuing: {(string.IsNullOrEmpty(title) ? "unknown" : title)}");
 
-                            // Ensure VLC running
-                            var startedP = await _vlc.EnsureRunningAsync();
-                            if (!startedP) _vlc.StartProcess();
-
-                            // Process first item immediately so playback can start as soon as it's ready
-                            string firstUrl = playlistUrls[0];
-                            string firstPlayUrl = firstUrl;
-                            try
-                            {
-                                var firstMeta = await YtDlpHelper.GetYoutubeMetadataAsync(firstUrl);
-                                var firstStreams = await YtDlpHelper.GetYoutubeStreamUrlsAsync(firstUrl);
-                                if (!string.IsNullOrWhiteSpace(firstStreams.videoUrl)) firstPlayUrl = firstStreams.videoUrl;
-                                var firstId = await _vlc.EnqueueAsync(firstPlayUrl);
-                                if (!string.IsNullOrEmpty(firstId) && (firstMeta.title != null || firstMeta.duration.HasValue))
-                                    _metaById[firstId] = (firstMeta.title, firstMeta.duration);
-                                var status = await _vlc.SendRequestAsync("/requests/status.xml");
-                                if (string.IsNullOrEmpty(status) || status.Contains("stopped") || status.Contains("idle"))
+                                var lastId = await _vlc.EnqueueAsync(vUrl, aUrl);
+                                if (!string.IsNullOrEmpty(lastId))
                                 {
-                                    if (!string.IsNullOrEmpty(firstId)) await _vlc.PlayByIdAsync(firstId);
+                                    if (!string.IsNullOrEmpty(title) || duration.HasValue)
+                                        _metaById[lastId] = (title, duration);
+
+                                    // Play if idle
+                                    var statusXml = await _vlc.SendRequestAsync("/requests/status.xml");
+                                    if (statusXml.Contains("stopped") || statusXml.Contains("idle"))
+                                        await _vlc.PlayByIdAsync(lastId);
                                 }
-                            }
-                            catch { }
-
-                            // Enqueue remaining items as tracked jobs (one job per item for visibility)
-                            for (int i = 1; i < playlistUrls.Count; i++)
-                            {
-                                var entryUrl = playlistUrls[i];
-                                var idx = i + 1;
-                                var descr = $"Playlist enqueue #{idx}: {entryUrl}";
-                                string pjobId = null;
-                                pjobId = _jobs.StartJob(async () =>
-                                {
-                                    try
-                                    {
-                                        _jobs.UpdateDescription(pjobId, $"Fetching metadata: {entryUrl}");
-                                        var meta = await YtDlpHelper.GetYoutubeMetadataAsync(entryUrl);
-                                        var streams = await YtDlpHelper.GetYoutubeStreamUrlsAsync(entryUrl);
-                                        var entryPlayUrl = !string.IsNullOrWhiteSpace(streams.videoUrl) ? streams.videoUrl : entryUrl;
-                                        if (!string.IsNullOrEmpty(meta.title))
-                                            _jobs.UpdateDescription(pjobId, $"Enqueue: {meta.title}");
-                                        var lastId = await _vlc.EnqueueAsync(entryPlayUrl);
-                                        if (!string.IsNullOrEmpty(lastId) && (!string.IsNullOrEmpty(meta.title) || meta.duration.HasValue))
-                                            _metaById[lastId] = (meta.title, meta.duration);
-                                    }
-                                    catch { _jobs.UpdateDescription(pjobId, "Failed"); }
-                                }, descr, requester);
-                            }
-                            return;
-                    }
-
-                    // Not a playlist: single video handling
-                    var metaSingle = await YtDlpHelper.GetYoutubeMetadataAsync(url);
-                    metaTitle = metaSingle.title;
-                    metaDuration = metaSingle.duration;
-                    var yt = await YtDlpHelper.GetYoutubeStreamUrlsAsync(url);
-                    if (!string.IsNullOrWhiteSpace(yt.videoUrl))
-                    {
-                        playUrl = yt.videoUrl;
-                        audioUrl = yt.audioUrl;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("yt-dlp로 Youtube 스트림 URL 추출 실패");
+                            });
+                             _jobs.UpdateDescription(playlistJobId, $"Playlist [{processedCount}] - Completed");
+                        }, $"Playlist: {url}", requester);
                         return;
                     }
-                }
-                // If VLC is running and we just want to enqueue, use controller
-                if (enqueueOnly && _vlc.IsRunning)
-                {
-                    var lastId = await _vlc.EnqueueAsync(playUrl);
-                    if (!string.IsNullOrEmpty(lastId) && (!string.IsNullOrEmpty(metaTitle) || metaDuration.HasValue))
-                        _metaById[lastId] = (metaTitle, metaDuration);
-                    // if idle, try to play
-                    var status = await _vlc.SendRequestAsync("/requests/status.xml");
-                    if (string.IsNullOrEmpty(status) || status.Contains("stopped") || status.Contains("idle"))
-                    {
-                        if (!string.IsNullOrEmpty(lastId)) await _vlc.PlayByIdAsync(lastId);
-                    }
-                    return;
-                }
+                    
+                    // Single Video handling (or 1-item playlist)
+                    var targetUrl = (playlistUrls != null && playlistUrls.Count == 1) ? playlistUrls[0] : url;
+                    var meta = await YtDlpHelper.GetYoutubeMetadataAsync(targetUrl);
+                    var streams = await YtDlpHelper.GetYoutubeStreamUrlsAsync(targetUrl);
+                    string playUrl = !string.IsNullOrWhiteSpace(streams.videoUrl) ? streams.videoUrl : targetUrl;
 
-                // Ensure VLC is running (start if needed) then start with URL
-                var started = await _vlc.EnsureRunningAsync();
-                if (!started)
-                {
-                    // fallback: start process directly
-                    _vlc.StartProcess(playUrl, audioUrl);
+                    var lastId = await _vlc.EnqueueAsync(playUrl, streams.audioUrl);
+                    if (!string.IsNullOrEmpty(lastId))
+                    {
+                        if (!string.IsNullOrEmpty(meta.title) || meta.duration.HasValue)
+                            _metaById[lastId] = (meta.title, meta.duration);
+                        
+                        var statusXml = await _vlc.SendRequestAsync("/requests/status.xml");
+                        if (statusXml.Contains("stopped") || statusXml.Contains("idle"))
+                            await _vlc.PlayByIdAsync(lastId);
+                    }
                 }
                 else
                 {
-                    // if process started and we have playUrl, enqueue then play
-                    var lastId = await _vlc.EnqueueAsync(playUrl);
-                    if (!string.IsNullOrEmpty(lastId) && (!string.IsNullOrEmpty(metaTitle) || metaDuration.HasValue))
-                        _metaById[lastId] = (metaTitle, metaDuration);
-                    // if idle, play
-                    var status = await _vlc.SendRequestAsync("/requests/status.xml");
-                    if (string.IsNullOrEmpty(status) || status.Contains("stopped") || status.Contains("idle"))
-                    {
-                        if (!string.IsNullOrEmpty(lastId)) await _vlc.PlayByIdAsync(lastId);
-                    }
+                    // Non-Youtube direct URL
+                    var lastId = await _vlc.EnqueueAsync(url);
+                    var statusXml = await _vlc.SendRequestAsync("/requests/status.xml");
+                    if (statusXml.Contains("stopped") || statusXml.Contains("idle"))
+                        await _vlc.PlayByIdAsync(lastId);
                 }
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"[VLCCommandExecutor] 영상 재생 중 오류: {ex.Message}");
+                System.Console.WriteLine($"[VLCCommandExecutor] PlayAsync 오류: {ex.Message}");
             }
         }
 
@@ -352,9 +302,9 @@ namespace YoutubeTogether
                 System.Console.WriteLine("실행 중인 백그라운드 작업:");
                 foreach (var j in jobs)
                 {
-                    var status = j.Task == null ? "unknown" : j.Task.Status.ToString();
-                    var requester = string.IsNullOrEmpty(j.Requester) ? "<unknown>" : j.Requester;
-                    System.Console.WriteLine($"- {j.Id}: {j.Description} (by: {requester}, started: {j.StartedAt:u}, status: {status})");
+                    var status = j.CompletedAt.HasValue ? "Done" : "Running";
+                    var requester = string.IsNullOrEmpty(j.Requester) ? "unknown" : j.Requester;
+                    System.Console.WriteLine($"- [{j.StartedAt:HH:mm:ss}] {j.Description} (by {requester}) [{status}]");
                 }
             }
             catch (Exception ex)
@@ -493,10 +443,19 @@ namespace YoutubeTogether
             var ids = GetVlcPlaylistIds();
             var currentId = _vlc.GetCurrentPlayingIdAsync().GetAwaiter().GetResult();
             int startIndex = 0;
-            if (!string.IsNullOrEmpty(currentId))
+            if (!string.IsNullOrEmpty(currentId) && currentId != "-1")
             {
                 var idx = ids.IndexOf(currentId);
-                if (idx >= 0) startIndex = idx;
+                if (idx > 0)
+                {
+                    startIndex = idx;
+                    // Background cleanup of finished items
+                    CleanupPlayedItemsBackground(ids.GetRange(0, idx));
+                }
+                else if (idx == 0)
+                {
+                    startIndex = 0;
+                }
             }
 
             for (int i = startIndex; i < ids.Count; i++)
@@ -520,6 +479,30 @@ namespace YoutubeTogether
             return result;
         }
 
+        private void JumpToItem(string arg)
+        {
+            if (string.IsNullOrWhiteSpace(arg) || !int.TryParse(arg, out int idx))
+            {
+                System.Console.WriteLine("!jump <번호> 형식으로 입력하세요.");
+                return;
+            }
+            try
+            {
+                var ids = GetVlcPlaylistIds();
+                if (idx < 1 || idx > ids.Count)
+                {
+                    System.Console.WriteLine("잘못된 번호입니다.");
+                    return;
+                }
+                _vlc.PlayByIdAsync(ids[idx - 1]).GetAwaiter().GetResult();
+                System.Console.WriteLine($"{idx}번 항목으로 점프 완료");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"점프 오류: {ex.Message}");
+            }
+        }
+
         private string FormatDuration(double seconds)
         {
             try
@@ -540,16 +523,15 @@ namespace YoutubeTogether
         {
             System.Console.WriteLine("사용 가능한 명령어:");
             System.Console.WriteLine("!play <YouTube URL> - 영상 재생 (송출PC 전체화면 자동 실행)");
-            System.Console.WriteLine("  - 플레이리스트 URL을 넣으면 첫 항목의 스트림이 준비되는 즉시 재생을 시작하고, 나머지 항목은 백그라운드에서 순차 처리됩니다.");
-            System.Console.WriteLine("  - 플레이리스트 동기화(메타/스트림 추출)는 시간이 걸릴 수 있으니 !jobs로 진행 상태를 확인하세요.");
             System.Console.WriteLine("!skip - 현재 영상 건너뛰기");
-            System.Console.WriteLine("!queue - 대기열 확인 (VLC의 현재/다음 항목만 표시)");
+            System.Console.WriteLine("!jump <번호> - 특정 번호의 음악으로 즉시 이동 (대기열이 길 때 유용)");
+            System.Console.WriteLine("!queue - 대기열 확인 (VLC의 현재/다음 항목만 표시, 전송후 메시지 자동 삭제)");
             System.Console.WriteLine("!remove <번호> - 대기열에서 특정 항목 삭제");
             System.Console.WriteLine("!clear - 대기열 전체 삭제");
             System.Console.WriteLine("!stop - 재생 중지");
-            System.Console.WriteLine("!jobs - 백그라운드에서 진행 중인 작업 목록(메타/스트림 추출, 플레이리스트 항목 처리 등)");
-            System.Console.WriteLine("!stats - 완료된 작업 통계(어떤 작업이 오래 걸리는지 확인 가능)");
-            System.Console.WriteLine("!help - 도움말 (플레이리스트 동기화는 시간이 걸릴 수 있음)");
+            System.Console.WriteLine("!jobs - 백그라운드 작업 목록 확인");
+            System.Console.WriteLine("!help - 도움말 확인");
+            System.Console.WriteLine("\n* 참고: 디스코드 요청 및 결과 메시지는 30초 후 자동으로 삭제됩니다.");
         }
 
         private bool IsYoutubeUrl(string url)
@@ -615,58 +597,40 @@ namespace YoutubeTogether
             }
         }
 
-        private void EnqueueVlcUrl(string url, string title = null, double? duration = null, string requester = "Admin(CLI)")
+        private async Task DownloadAndEnqueueInternalAsync(string url, string title, double? duration, string requester, string jobId, string progressPrefix = "")
         {
-            // Create a tracked job for enqueue + metadata extraction
             var shortUrl = url.Length > 60 ? url.Substring(0, 57) + "..." : url;
-            var jobDesc = $"Enqueue: {shortUrl}";
-            string jobId = null;
-            jobId = _jobs.StartJob(async () =>
+            try
             {
-                try
+                if (jobId != null) _jobs.UpdateDescription(jobId, $"{progressPrefix}Fetching metadata: {shortUrl}");
+                if (string.IsNullOrEmpty(title) && !duration.HasValue && IsYoutubeUrl(url))
                 {
-                    // update description to indicate metadata fetch
-                    _jobs.UpdateDescription(jobId, $"Fetching metadata: {shortUrl}");
-                    if (string.IsNullOrEmpty(title) && !duration.HasValue && IsYoutubeUrl(url))
-                    {
-                        try
-                        {
-                            var meta = await YtDlpHelper.GetYoutubeMetadataAsync(url);
-                            title = meta.title;
-                            duration = meta.duration;
-                            if (!string.IsNullOrEmpty(title))
-                                _jobs.UpdateDescription(jobId, $"Enqueue: {title}");
-                        }
-                        catch { }
-                    }
+                    var meta = await YtDlpHelper.GetYoutubeMetadataAsync(url);
+                    title = meta.title;
+                    duration = meta.duration;
+                }
 
-                    _jobs.UpdateDescription(jobId, $"Resolving stream: {shortUrl}");
-                    var streams = await YtDlpHelper.GetYoutubeStreamUrlsAsync(url);
-                    var streamUrl = !string.IsNullOrWhiteSpace(streams.videoUrl) ? streams.videoUrl : url;
-                    _jobs.UpdateDescription(jobId, $"Enqueuing: {(string.IsNullOrEmpty(title) ? shortUrl : title)}");
-                    var lastId = await _vlc.EnqueueAsync(streamUrl);
-                    if (!string.IsNullOrEmpty(lastId))
-                    {
-                        if (!string.IsNullOrEmpty(title) || duration.HasValue)
-                        {
-                            _metaById[lastId] = (title, duration);
-                        }
-                        var statusXml = await _vlc.SendRequestAsync("/requests/status.xml");
-                        var sdoc = new System.Xml.XmlDocument();
-                        sdoc.LoadXml(statusXml);
-                        var state = sdoc.SelectSingleNode("//state")?.InnerText;
-                        if (string.IsNullOrEmpty(state) || state == "stopped" || state == "idle")
-                        {
-                            await _vlc.PlayByIdAsync(lastId);
-                        }
-                    }
-                }
-                catch (Exception ex)
+                if (jobId != null) _jobs.UpdateDescription(jobId, $"{progressPrefix}Resolving stream: {(string.IsNullOrEmpty(title) ? shortUrl : title)}");
+                var streams = await YtDlpHelper.GetYoutubeStreamUrlsAsync(url);
+                var streamUrl = !string.IsNullOrWhiteSpace(streams.videoUrl) ? streams.videoUrl : url;
+
+                if (jobId != null) _jobs.UpdateDescription(jobId, $"{progressPrefix}Enqueuing: {(string.IsNullOrEmpty(title) ? shortUrl : title)}");
+                var lastId = await _vlc.EnqueueAsync(streamUrl, streams.audioUrl);
+                if (!string.IsNullOrEmpty(lastId))
                 {
-                    System.Console.WriteLine($"VLC 대기열 추가 실패: {ex.Message}");
-                    _jobs.UpdateDescription(jobId, $"Failed: {ex.Message}");
+                    if (!string.IsNullOrEmpty(title) || duration.HasValue)
+                        _metaById[lastId] = (title, duration);
+
+                    var statusXml = await _vlc.SendRequestAsync("/requests/status.xml");
+                    if (statusXml.Contains("stopped") || statusXml.Contains("idle"))
+                        await _vlc.PlayByIdAsync(lastId);
                 }
-            }, jobDesc, requester);
+            }
+            catch (Exception ex)
+            {
+                if (jobId != null) _jobs.UpdateDescription(jobId, $"{progressPrefix}Failed: {ex.Message}");
+                throw;
+            }
         }
 
         private async System.Threading.Tasks.Task<System.Collections.Generic.List<string>> GetVlcPlaylistIdsAsync()
@@ -684,6 +648,23 @@ namespace YoutubeTogether
         {
             // Stop via controller
             try { _vlc.Stop(); } catch { }
+        }
+
+        private void CleanupPlayedItemsBackground(System.Collections.Generic.List<string> idsToCleanup)
+        {
+            if (idsToCleanup == null || idsToCleanup.Count == 0) return;
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                foreach (var id in idsToCleanup)
+                {
+                    try
+                    {
+                        await _vlc.DeleteByIdAsync(id);
+                        _metaById.TryRemove(id, out _);
+                    }
+                    catch { }
+                }
+            });
         }
 
     }

@@ -1038,23 +1038,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\junmkim\\.nuget\\packages\\": {},
+    "C:\\Users\\Mute\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\리서치\\src\\YoutubeTogether.csproj",
+      "projectUniqueName": "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
       "projectName": "YoutubeTogether",
-      "projectPath": "G:\\리서치\\src\\YoutubeTogether.csproj",
-      "packagesPath": "C:\\Users\\junmkim\\.nuget\\packages\\",
-      "outputPath": "G:\\리서치\\src\\obj\\",
+      "projectPath": "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
+      "packagesPath": "C:\\Users\\Mute\\.nuget\\packages\\",
+      "outputPath": "D:\\Toy-DiscordBot\\src\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\junmkim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Mute\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1081,7 +1081,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -1120,7 +1120,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

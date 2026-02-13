@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj": {}
+    "D:\\테스트\\Toy-DiscordBot\\src\\YoutubeTogether.csproj": {}
   },
   "projects": {
-    "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj": {
+    "D:\\테스트\\Toy-DiscordBot\\src\\YoutubeTogether.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
+        "projectUniqueName": "D:\\테스트\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
         "projectName": "YoutubeTogether",
-        "projectPath": "D:\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
-        "packagesPath": "C:\\Users\\Mute\\.nuget\\packages\\",
-        "outputPath": "D:\\Toy-DiscordBot\\src\\obj\\",
+        "projectPath": "D:\\테스트\\Toy-DiscordBot\\src\\YoutubeTogether.csproj",
+        "packagesPath": "C:\\Users\\junmkim\\.nuget\\packages\\",
+        "outputPath": "D:\\테스트\\Toy-DiscordBot\\src\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mute\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\junmkim\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -54,17 +54,13 @@
               "target": "Package",
               "version": "[3.12.0, )"
             },
-            "FFmpeg.AutoGen": {
+            "LibVLCSharp": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[3.9.5, )"
             },
-            "Microsoft.Web.WebView2": {
+            "VideoLAN.LibVLC.Windows": {
               "target": "Package",
-              "version": "[1.0.3719.77, )"
-            },
-            "YoutubeExplode": {
-              "target": "Package",
-              "version": "[6.5.6, )"
+              "version": "[3.0.23, )"
             }
           },
           "imports": [
@@ -83,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

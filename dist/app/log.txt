@@ -1,5 +1,0 @@
-[2026-02-11 18:37:57] 명령 수신:  (from submutesk)
-[2026-02-11 18:38:26] 명령 수신: !play (from muteskmyuteu)
-[2026-02-11 18:38:39] 명령 수신: !play https://youtu.be/-H2IIjdiPwI?si=2mvxKpR1Eu8fgoYn (from muteskmyuteu)
-[2026-02-11 18:38:39] 영상 재생 요청: https://youtu.be/-H2IIjdiPwI?si=2mvxKpR1Eu8fgoYn
-[2026-02-11 18:38:40] 명령 수신: 대기열에 추가됨: https://youtu.be/-H2IIjdiPwI?si=2mvxKpR1Eu8fgoYn (요청자: muteskmyuteu) (from MuteBot)

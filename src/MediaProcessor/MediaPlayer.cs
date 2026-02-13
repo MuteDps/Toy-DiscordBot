@@ -27,5 +27,44 @@ namespace YoutubeTogether.MediaProcessor
         private static System.Lazy<MediaController> _instance = new System.Lazy<MediaController>(() => new MediaController());
         public static MediaController Instance => _instance.Value;
 
+        private VlcMediaController _vlcController = new VlcMediaController();
+        internal void ClearQueue()
+        {
+            _vlcController.Clear();
+        }
+
+        internal string GetQueuePage(int page)
+        {
+            (var message, int totalPages) =  _vlcController.GetQueuePage(page);
+            var now = _vlcController.GetCurrentTrack();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"대기열 ( {page}/{totalPages} 페이지)");
+            sb.AppendLine($"Current : {now.title} [{now.currentTime}/{now.totalTime}]");
+            sb.AppendLine(message);
+
+            return sb.ToString();
+        }
+
+        internal void Play(string argument)
+        {
+            _vlcController.AddAsync(argument);
+        }
+
+        internal void RemoveAt(int idx)
+        {
+            _vlcController.RemoveAt(idx);
+        }
+
+        internal void Skip(int n)
+        {
+            _vlcController.Next(n);
+        }
+
+        internal void Stop()
+        {
+            _vlcController.Stop();
+        }
     }
 }

@@ -66,6 +66,7 @@ namespace YoutubeTogether.Hanlder
                         try
                         {
                             await ProcessCommandAsync(cmd);
+                            cmd.Task.Start();
                         }
                         catch (Exception ex)
                         {
@@ -91,55 +92,54 @@ namespace YoutubeTogether.Hanlder
 
         private Task ProcessCommandAsync(JobInfo cmd)
         {
-            string c = cmd.command.Trim();
+            string c = cmd.Command.Trim();
             if (c.StartsWith("!")) c = c.Substring(1);
             c = c.ToLowerInvariant();
 
             switch (c)
             {
                 case "play":
-                    //MediaController.Instance.Play(cmd.argument);
+                    MediaController.Instance.Play(cmd.Argument);
                     return Task.CompletedTask;
                 case "stop":
-                    //MediaController.Instance.Stop();
+                    MediaController.Instance.Stop();
                     return Task.CompletedTask;
                 case "skip":
-                    /*
-                    if (int.TryParse(cmd.argument, out var n) && n > 0)
+                    
+                    if (int.TryParse(cmd.Argument, out var n) && n > 0)
                         MediaController.Instance.Skip(n);
                     else
                         MediaController.Instance.Skip(1);
-                    */
+                    
                     return Task.CompletedTask;
                 case "queue":
                     int page = 1;
-                    if (!string.IsNullOrEmpty(cmd.argument) && int.TryParse(cmd.argument, out var p) && p > 0) page = p;
-                    //var text = MediaController.Instance.GetQueuePage(page);
-                    Logger.Log("대기열 보기 요청");
-                   // Logger.Log(text);
+                    if (!string.IsNullOrEmpty(cmd.Argument) && int.TryParse(cmd.Argument, out var p) && p > 0) page = p;
+                    cmd.Result = MediaController.Instance.GetQueuePage(page);
+                    
                     return Task.CompletedTask;
                 case "remove":
-                    if (int.TryParse(cmd.argument, out var idx))
+                    if (int.TryParse(cmd.Argument, out var idx))
                     {
-                       // MediaController.Instance.RemoveAt(idx);
-                        Logger.Log($"{idx}번 항목 삭제 요청");
+                        MediaController.Instance.RemoveAt(idx);
+                        cmd.Result = $"{idx}번 항목 삭제 요청";
                     }
-                    else Logger.Log("삭제할 인덱스가 필요합니다.");
+                    else cmd.Result = "삭제할 인덱스가 필요합니다.";
                     return Task.CompletedTask;
                 case "clear":
-                   // MediaController.Instance.ClearQueue();
-                    Logger.Log("대기열 전체 삭제 요청");
+                    MediaController.Instance.ClearQueue();
+                    cmd.Result = "대기열 전체 삭제 요청";
                     return Task.CompletedTask;
                 case "jobs":
-                    Logger.Log("백그라운드 작업 목록 요청");
+                    cmd.Result = "백그라운드 작업 목록 요청";
                     var jobs = JobTracker.Instance.ListJobs();
                     foreach (var j in jobs)
                     {
-                        Logger.Log($"- {j.Id}: {j.Description} (by: {j.Requester}, started: {j.StartedAt:u})");
+                        cmd.Result = $"- {j.Id}: {j.Description} (by: {j.Requester}, started: {j.StartedAt:u})";
                     }
                     return Task.CompletedTask;
                 case "stats":
-                    Logger.Log("작업 통계 요청");
+                    cmd.Result = "작업 통계 요청";
                     var completed = JobTracker.Instance.ListCompletedJobs();
                     foreach (var g in completed.GroupBy(x => x.Description))
                     {
@@ -147,14 +147,14 @@ namespace YoutubeTogether.Hanlder
                         if (times.Count == 0) continue;
                         var avg = TimeSpan.FromSeconds(times.Average()).TotalSeconds;
                         var max = TimeSpan.FromSeconds(times.Max()).TotalSeconds;
-                        Logger.Log($"{g.Key}: count={times.Count}, avg={avg:F1}s, max={max:F1}s");
+                        cmd.Result = $"{g.Key}: count={times.Count}, avg={avg:F1}s, max={max:F1}s";
                     }
                     return Task.CompletedTask;
-                case "help":
-                    Logger.Log("사용 가능한 명령어:\n!play <URL>\n!skip\n!queue\n!remove <번호>\n!clear\n!stop\n!jobs\n!stats\n!help");
+                case "help":    
+                    cmd.Result = "사용 가능한 명령어:\n!play <URL>\n!skip\n!queue\n!remove <번호>\n!clear\n!stop\n!jobs\n!stats\n!help";
                     return Task.CompletedTask;
                 default:
-                    Logger.Log($"알 수 없는 명령: {cmd.command}");
+                    cmd.Result = $"알 수 없는 명령: {cmd.Argument}";
                     return Task.CompletedTask;
             }
         }

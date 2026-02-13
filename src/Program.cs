@@ -2,6 +2,7 @@
 // 메인 엔트리 포인트
 using System;
 using System.Threading.Tasks;
+using YoutubeTogether.Command;
 
 namespace YoutubeTogether
 {
@@ -9,13 +10,8 @@ namespace YoutubeTogether
     {
         static async Task Main(string[] args)
         {
-            StartVlcWithHttp();
-
-            // 단일 VlcController 및 VLCCommandExecutor 인스턴스를 생성하여 CLI와 Discord에 주입
-            var vlcController = new VlcController();
-            var vlcExecutor = new VLCCommandExecutor(vlcController);
-            var cli = new CLICommandExecutor(vlcExecutor);
-            var bot = new DiscordBot(vlcExecutor);
+            var cli = new CLICommandExecutor();
+            var bot = new DiscordBot();
 
             string token = "디스코드 토큰 봇"; // 실제 토큰으로 교체
 
@@ -58,20 +54,6 @@ namespace YoutubeTogether
             try { await bot.StopAsync(); } catch { }
             // 기다려서 백그라운드 작업이 끝나도록 함
             try { await botTask; } catch { }
-        }
-
-        private static void StartVlcWithHttp()
-        {
-            string vlcPath = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
-            string args = "--extraintf http --http-password=ytqueue --fullscreen";
-            var psi = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = vlcPath,
-                Arguments = args,
-                UseShellExecute = true,
-                WorkingDirectory = @"C:\Program Files\VideoLAN\VLC\"
-            };
-            System.Diagnostics.Process.Start(psi);
         }
     }
 }

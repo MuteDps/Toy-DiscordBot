@@ -9,19 +9,28 @@ namespace YoutubeTogether.Hanlder
 {
     public class JobInfo
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Description { get; set; }
-        public Task InnerOnComplete { get; set; }
-        public DateTime StartedAt { get; set; }
+        public DateTime StartedAt { get; set; } = DateTime.Now;
         public DateTime? CompletedAt { get; set; }
         public Exception Error { get; set; }
-        public double? DurationSeconds => CompletedAt.HasValue ? (CompletedAt.Value - StartedAt).TotalSeconds : null;
+        public double? DurationSeconds => CompletedAt.HasValue
+            ? (CompletedAt.Value - StartedAt).TotalSeconds
+            : null;
+
         public string Requester { get; set; }
-        public string command { get; set; }
+        public string Command { get; set; }      // command → Command (C# 관례)
+        public string Argument { get; set; }
 
-        public string argument { get; set; }
+        public Task Task { get; set; }
 
-        public Task OnComplete { get; set; }
+        // 핵심: 결과를 받는 콜백!
+        public Action<JobInfo> OnCompleted { get; set; }
+
+        // Handler가 나중에 채워줄 결과들
+        public string Result { get; set; }
+        public bool IsSuccess => Error == null && CompletedAt.HasValue;
+        public bool IsFailed => Error != null;
     }
 
     public sealed class JobTracker
@@ -41,9 +50,10 @@ namespace YoutubeTogether.Hanlder
         {
             var id = Guid.NewGuid().ToString();
             var started = DateTime.UtcNow;
-            var info = new JobInfo { Id = id, Description = description, StartedAt = started, Requester = requester, command = command, argument = argument };
-            var Complete = Task.Run(async () =>
+            var info = new JobInfo { Id = id, Description = description, StartedAt = started, Requester = requester, Command = command, Argument = argument };
+            var Complete = new Task(async () =>
             {
+                info.Description = "Complete";
 
                 info.CompletedAt = DateTime.UtcNow;
                 // remove from active
@@ -53,9 +63,9 @@ namespace YoutubeTogether.Hanlder
                 // cap queue
                 while (_completed.Count > _completedCap && _completed.TryDequeue(out var _)) { }
 
-                await info.OnComplete;
+                info.OnCompleted?.Invoke(info);
             });
-            info.InnerOnComplete = Complete;
+            info.Task = Complete;
             _jobs[id] = info;
             return info;
         }

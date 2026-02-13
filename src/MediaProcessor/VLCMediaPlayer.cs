@@ -31,7 +31,7 @@ namespace YoutubeTogether.MediaProcessor
         {
             // LibVLC 초기화
             Core.Initialize();
-            _libVlc = new LibVLC();
+            _libVlc = new LibVLC("--fullscreen");
             _mediaPlayer = new MediaPlayer(_libVlc);
 
             // 현재 영상이 끝나면 자동으로 다음 곡 재생 (비동기 처리)
@@ -241,6 +241,7 @@ namespace YoutubeTogether.MediaProcessor
                 }
 
                 _mediaPlayer.Play(media);
+                _mediaPlayer.Fullscreen = true;
             }
             Console.WriteLine($"[재생] {item.Title} (1080p/Best)");
         }

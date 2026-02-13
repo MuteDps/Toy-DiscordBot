@@ -15,14 +15,16 @@ namespace YoutubeTogether.Command
         {
             var job = JobTracker.Instance.IssueJob("CreateCLI", command, argument);
 
-            job.OnComplete = new System.Threading.Tasks.Task(() =>
+            job.OnCompleted = result =>
             {
-                Console.WriteLine($"CLI: 명령 '{command}' 완료");
-                if (job.Error != null)
+                if (result.IsFailed)
                 {
-                    Console.WriteLine($"CLI: 명령 '{command}' 실행 중 오류 발생: {job.Error.Message}");
+                    Logger.Log ($"명령 처리 실패: {result.Error.Message}");
+                    return;
                 }
-            });
+
+                Logger.Log(result.Result);
+            };
 
             Handler.Instance.DispatchCommand(job);
         }

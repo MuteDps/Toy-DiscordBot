@@ -40,16 +40,18 @@ namespace YoutubeTogether.Command
             var job = JobTracker.Instance.IssueJob("CreateDiscord",
                 messages[0], messages[1]);
 
-            job.OnComplete = new Task(() =>
+            job.OnCompleted = result =>
             {
-                if(job.Error != null)
+                if (result.IsFailed)
                 {
-                    SendAndDeleteAsync(message, $"{job.Id}:{job.command} 작업실패 {job.Error.Message}").Wait();
+                    _ = SendAndDeleteAsync(message, $"명령 처리 실패: {result.Error.Message}");
                     return;
                 }
 
-                SendAndDeleteAsync(message, $"{job.Id}:{job.command} 작업완료 {job.CompletedAt}:{job.Requester}").Wait();
-            });
+                _ = SendAndDeleteAsync(message, result.Result);
+            };
+
+            Hanlder.Handler.Instance.DispatchCommand(job);
         }
 
         private async Task SendAndDeleteAsync(SocketMessage original, string responseText, int delayMs = 30000)
